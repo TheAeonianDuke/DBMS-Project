@@ -21,7 +21,7 @@
     <property name="geometry">
      <rect>
       <x>-40</x>
-      <y>310</y>
+      <y>330</y>
       <width>611</width>
       <height>371</height>
      </rect>
@@ -36,24 +36,10 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLineEdit" name="nameinput">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>50</y>
-      <width>281</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);
-font: 13pt &quot;Montserrat&quot;;</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>100</x>
       <y>0</y>
       <width>251</width>
       <height>31</height>
@@ -64,7 +50,7 @@ font: 13pt &quot;Montserrat&quot;;</string>
 color: rgb(27, 147, 164);</string>
     </property>
     <property name="text">
-     <string>Register User</string>
+     <string>Login</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -88,34 +74,6 @@ color: rgb(27, 147, 164);</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="genderinput">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>290</y>
-      <width>281</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);
-font: 13pt &quot;Montserrat&quot;;</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="ageinput">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>130</y>
-      <width>281</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);
-font: 13pt &quot;Montserrat&quot;;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
@@ -158,20 +116,6 @@ color: rgb(27, 147, 164);</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLineEdit" name="phoneinput">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>210</y>
-      <width>281</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);
-font: 13pt &quot;Montserrat&quot;;</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
@@ -211,7 +155,103 @@ color: rgb(27, 147, 164);</string>
    <widget class="QPushButton" name="control_bt">
     <property name="geometry">
      <rect>
-      <x>750</x>
+      <x>540</x>
+      <y>620</y>
+      <width>291</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 12pt &quot;Lemon/Milk&quot;;color: rgb(255, 255, 255);background-color: rgb(253, 142, 192);</string>
+    </property>
+    <property name="text">
+     <string>S t a r t   c a m e r a</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="namelabel">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>60</y>
+      <width>291</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Lemon/Milk&quot;;
+color: rgb(0, 0, 0);</string>
+    </property>
+    <property name="text">
+     <string>waiting...</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="agelabel">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>140</y>
+      <width>291</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Lemon/Milk&quot;;
+color: rgb(0, 0, 0);</string>
+    </property>
+    <property name="text">
+     <string>waiting...</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="phonelabel">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>220</y>
+      <width>291</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Lemon/Milk&quot;;
+color: rgb(0, 0, 0);</string>
+    </property>
+    <property name="text">
+     <string>waiting...</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="genderlabel">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>300</y>
+      <width>291</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Lemon/Milk&quot;;
+color: rgb(0, 0, 0);</string>
+    </property>
+    <property name="text">
+     <string>waiting...</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="verify_btn">
+    <property name="geometry">
+     <rect>
+      <x>900</x>
       <y>620</y>
       <width>291</width>
       <height>41</height>
@@ -222,6 +262,22 @@ color: rgb(27, 147, 164);</string>
     </property>
     <property name="text">
      <string>C a p t u r e   a n d   v e r i f y</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="login_btn">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>360</y>
+      <width>171</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 12pt &quot;Lemon/Milk&quot;;color: rgb(255, 255, 255);background-color: rgb(253, 142, 192);</string>
+    </property>
+    <property name="text">
+     <string>L o g i n</string>
     </property>
    </widget>
   </widget>

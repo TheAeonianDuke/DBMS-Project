@@ -1,115 +1,120 @@
-# -*- coding: utf-8 -*-
+# TODO : Add back navigation button
+#        Take user to personal homepage after login
+#        Handle empty button clicks
+#        Handle face not detected case 
+#        Fix "Waiting" text
 
-# Form implementation generated from reading ui file '.\login.ui'
-#
-# Created by: PyQt5 UI code generator 5.13.0
-#
-# WARNING! All changes made in this file will be lost!
+import sys
 
+# import some PyQt5 modules
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtGui import QImage
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import QTimer
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+# import Opencv module
+import cv2
+import os
+import numpy as np
+from PIL import Image
 
+from loginui import *
+import numpy as np
+import sqlite3
+import splashscreen
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1279, 720)
-        MainWindow.setStyleSheet("background-color: rgb(241, 241, 241);")
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(-40, 310, 611, 371))
-        self.label.setText("")
-        self.label.setPixmap(QtGui.QPixmap("../Images/2749712.jpg"))
-        self.label.setScaledContents(True)
-        self.label.setObjectName("label")
-        self.nameinput = QtWidgets.QLineEdit(self.centralwidget)
-        self.nameinput.setGeometry(QtCore.QRect(150, 50, 281, 51))
-        self.nameinput.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"font: 13pt \"Montserrat\";")
-        self.nameinput.setObjectName("nameinput")
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(160, 0, 251, 31))
-        self.label_2.setStyleSheet("font: 20pt \"Lemon/Milk\";\n"
-"color: rgb(27, 147, 164);")
-        self.label_2.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_2.setObjectName("label_2")
-        self.label_6 = QtWidgets.QLabel(self.centralwidget)
-        self.label_6.setGeometry(QtCore.QRect(50, 280, 91, 61))
-        self.label_6.setStyleSheet("font: 15pt \"Lemon/Milk\";\n"
-"color: rgb(27, 147, 164);")
-        self.label_6.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_6.setObjectName("label_6")
-        self.genderinput = QtWidgets.QLineEdit(self.centralwidget)
-        self.genderinput.setGeometry(QtCore.QRect(150, 290, 281, 51))
-        self.genderinput.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"font: 13pt \"Montserrat\";")
-        self.genderinput.setObjectName("genderinput")
-        self.ageinput = QtWidgets.QLineEdit(self.centralwidget)
-        self.ageinput.setGeometry(QtCore.QRect(150, 130, 281, 51))
-        self.ageinput.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"font: 13pt \"Montserrat\";")
-        self.ageinput.setObjectName("ageinput")
-        self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(50, 60, 91, 31))
-        self.label_3.setStyleSheet("font: 15pt \"Lemon/Milk\";\n"
-"color: rgb(27, 147, 164);")
-        self.label_3.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_3.setObjectName("label_3")
-        self.label_4 = QtWidgets.QLabel(self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(50, 140, 91, 31))
-        self.label_4.setStyleSheet("font: 15pt \"Lemon/Milk\";\n"
-"color: rgb(27, 147, 164);")
-        self.label_4.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_4.setObjectName("label_4")
-        self.phoneinput = QtWidgets.QLineEdit(self.centralwidget)
-        self.phoneinput.setGeometry(QtCore.QRect(150, 210, 281, 51))
-        self.phoneinput.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"font: 13pt \"Montserrat\";")
-        self.phoneinput.setObjectName("phoneinput")
-        self.label_5 = QtWidgets.QLabel(self.centralwidget)
-        self.label_5.setGeometry(QtCore.QRect(50, 200, 91, 61))
-        self.label_5.setStyleSheet("font: 15pt \"Lemon/Milk\";\n"
-"color: rgb(27, 147, 164);")
-        self.label_5.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_5.setObjectName("label_5")
-        self.image_label = QtWidgets.QLabel(self.centralwidget)
-        self.image_label.setGeometry(QtCore.QRect(450, -20, 831, 631))
-        self.image_label.setStyleSheet("")
-        self.image_label.setText("")
-        self.image_label.setObjectName("image_label")
-        self.control_bt = QtWidgets.QPushButton(self.centralwidget)
-        self.control_bt.setGeometry(QtCore.QRect(750, 620, 291, 41))
-        self.control_bt.setStyleSheet("font: 12pt \"Lemon/Milk\";color: rgb(255, 255, 255);background-color: rgb(253, 142, 192);")
-        self.control_bt.setObjectName("control_bt")
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1279, 21))
-        self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+class MainWindowLogin(QWidget):
+    # class constructor
+    def __init__(self,oldwindow):
+        super().__init__()
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(oldwindow)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.viewCam)
+        # self.ui.control_bt.hide()
+        self.ui.control_bt.clicked.connect(self.controlTimer)
+        # self.ui.submit.clicked.connect(self.insertOrUpdate)
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+    def openWindow(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui = splashscreen.Ui_MainWindow()
+        self.ui.setupUi(self.window)
+        self.window.show()
 
-    def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_2.setText(_translate("MainWindow", "Register User"))
-        self.label_6.setText(_translate("MainWindow", "<html><head/><body><p>Gender</p></body></html>"))
-        self.label_3.setText(_translate("MainWindow", "Name"))
-        self.label_4.setText(_translate("MainWindow", "Age"))
-        self.label_5.setText(_translate("MainWindow", "<html><head/><body><p>Phone</p><p>Number</p></body></html>"))
-        self.control_bt.setText(_translate("MainWindow", "C a p t u r e   a n d   v e r i f y"))
+    def viewCam(self):
+        sampleNum=0
+        self.scan=0
+        while(self.scan!=1):
+            ret,img=self.cam.read() #Read from cam
 
+            ret = cv2.resize(ret, (860,640))
+            img = cv2.resize(img, (860,640))
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
+            gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) #convert image to gray
+            height, width, channel = img.shape
+            step = channel * width
+            faces=self.faceDetect.detectMultiScale(gray,1.3,5) #Detect objects of different sizes 
+            qImg = QImage(img.data, width, height, step, QImage.Format_RGB888)
+            # Save images and create boxes 
+            self.profiler=None
+            for(x,y,w,h) in faces:
+                cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
+                id,conf=self.rec.predict(gray[y:y+h,x:x+w])
+                profile=self.getProfile(id)
+                self.profiler = profile
+                if(profile!=None):
+                    cv2.putText(img,"Name : "+str(profile[1]),(x,y+h+20),self.font,0.5,(0,255,0));
+                    cv2.putText(img,"Age : "+str(profile[3]),(x,y+h+45),self.font,0.5,(0,255,0));
+                    cv2.putText(img,"Gender : "+str(profile[4]),(x,y+h+70),self.font,0.5,(0,255,0));
+
+            self.ui.image_label.setPixmap(QPixmap.fromImage(qImg))
+            # cv2.imshow("Face",img);
+            cv2.waitKey(1)
+            self.ui.verify_btn.clicked.connect(self.verifyUser)
+            # if(==ord('q')):
+            #     self.timer.stop()
+            #     self.cam.release()
+            #     break;
+            
+            
+                
+
+    def verifyUser(self):
+        self.ui.namelabel.setText(str(self.profiler[1]))
+        self.ui.agelabel.setText(str(self.profiler[3]))
+        self.ui.genderlabel.setText(str(self.profiler[4]))
+        self.ui.phonelabel.setText(str(self.profiler[5]))
+        self.timer.stop()
+        self.cam.release()
+        self.scan=1
+
+    def controlTimer(self):
+        if not self.timer.isActive():
+            
+            self.faceDetect=cv2.CascadeClassifier('../haarcascade_frontalface_default.xml') #Use Default haar cascade from OpenCV
+            self.cam=cv2.VideoCapture(0);
+            self.rec=cv2.face.LBPHFaceRecognizer_create()
+            self.rec.read("recognizer_trainningData.yml")
+            self.font=cv2.FONT_HERSHEY_SIMPLEX
+            self.timer.start(20)
+            self.ui.control_bt.setText("R e c o g n i z i n g  F a c e . . .")
+        
+        # else:
+        #     self.timer.stop()
+        #     self.cam.release()
+        #     self.ui.control_bt.setText("S t a r t  C a m e r a")
+        #     
+        #     
+    def getProfile(self,id):  
+        facedb=sqlite3.connect("../dbms_db.db")
+        c=facedb.cursor()
+        cmd="SELECT * FROM users WHERE user_id="+str(id)
+        cursor=facedb.execute(cmd)
+        profile=None
+        for row in cursor:
+            profile=row
+        # facedb.close()
+        return profile
+
+        

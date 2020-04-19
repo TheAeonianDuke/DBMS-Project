@@ -9,12 +9,20 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import newuser
+import login
 import sys
 
 class Ui_MainWindow(object):
-    def openWindow(self):
+    def openWindowNewUser(self):
         self.window = QtWidgets.QMainWindow()
         self.ui = newuser.MainWindow(self.window)
+        window.hide()
+        self.window.show()
+
+
+    def openWindowLogin(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui = login.MainWindowLogin(self.window)
         window.hide()
         self.window.show()
 
@@ -51,11 +59,14 @@ class Ui_MainWindow(object):
         self.NewUserBtn.setGeometry(QtCore.QRect(290, 650, 281, 41))
         self.NewUserBtn.setStyleSheet("background-color: rgb(255, 191, 93);color: rgb(247, 247, 247);font: 15pt \"Lemon/Milk\";")
         self.NewUserBtn.setObjectName("NewUserBtn")
-        self.NewUserBtn.clicked.connect(self.openWindow)
+        self.NewUserBtn.clicked.connect(self.openWindowNewUser)
+        
         self.ExistingUserBtn_2 = QtWidgets.QPushButton(self.centralwidget)
         self.ExistingUserBtn_2.setGeometry(QtCore.QRect(650, 650, 281, 41))
         self.ExistingUserBtn_2.setStyleSheet("background-color: rgb(255, 191, 93);color: rgb(247, 247, 247);font: 15pt \"Lemon/Milk\";")
         self.ExistingUserBtn_2.setObjectName("ExistingUserBtn_2")
+        self.ExistingUserBtn_2.clicked.connect(self.openWindowLogin)
+        
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
