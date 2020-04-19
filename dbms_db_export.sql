@@ -2,9 +2,7 @@
 -- File generated with SQLiteStudio v3.2.1 on Wed Feb 5 15:34:00 2020
 --
 -- Text encoding used: System
---
-PRAGMA foreign_keys = off;
-BEGIN TRANSACTION;
+
 
 -- Table: discounts
 CREATE TABLE discounts (
@@ -582,5 +580,4 @@ INSERT INTO users (user_id, first_name, last_name, age, gender, phone) VALUES (9
 INSERT INTO users (user_id, first_name, last_name, age, gender, phone) VALUES (99, 'Berk', 'Griffin', 65, 'Male', '770-7281');
 INSERT INTO users (user_id, first_name, last_name, age, gender, phone) VALUES (100, 'Isaac', 'Rojas', 18, 'Male', '1-349-272-5779');
 
-COMMIT TRANSACTION;
-PRAGMA foreign_keys = on;
+
