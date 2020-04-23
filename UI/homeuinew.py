@@ -10,6 +10,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 import last_transaction_new, loyaltyui
+import sqlite3
 
 
 class Ui_MainWindow(object):
@@ -43,6 +44,26 @@ class Ui_MainWindow(object):
         # self.ui.setupUi(self.window)
         self.window.hide()
         self.window.show()
+    def fillProfile(self,id): # returns a tuple of all the attributes
+        db=sqlite3.connect("dbms_db.db")
+        cur=db.cursor()
+        cur.execute("SELECT first_name,last_name,gender,age,phone FROM users WHERE user_id = ?", (id,))
+        tup=cur.fetchone()
+        #print(tup[0]+tup[1])
+        # name=tup[0]+" "+tup[1]
+        # gender=tup[2]
+        # age=tup[3]
+        # phone=tup[4]
+        # self.name_input.setText(name)
+        #print(name,gender,age,phone)
+        #print("Passed")
+        return tup
+    def fillLoyalty(self,id):
+        db=sqlite3.connect("dbms_db.db")
+        cur=db.cursor()
+        cur.execute("SELECT category FROM loyalty WHERE user_id = ?", (id,))
+        tup=cur.fetchone()
+        return tup
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1280, 720)
@@ -95,6 +116,7 @@ class Ui_MainWindow(object):
 "")
         self.name_input.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.name_input.setLineWidth(1)
+        self.name_input.setText("Hello")
         self.name_input.setObjectName("name_input")
         self.user_id_input = QtWidgets.QLabel(self.centralwidget)
         self.user_id_input.setGeometry(QtCore.QRect(339, 200, 291, 30))
@@ -169,6 +191,7 @@ class Ui_MainWindow(object):
         self.home_image.setPixmap(QtGui.QPixmap("../Images/home_man.jpg"))
         self.home_image.setScaledContents(True)
         self.home_image.setObjectName("home_image")
+        self.fillProfile(id=1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1280, 26))
@@ -183,6 +206,14 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
+        id=1
+        tup1=self.fillProfile(id)
+        tup2=self.fillLoyalty(id)
+        name=str(tup1[0]+" "+tup1[1])
+        gender=str(tup1[2])
+        age=str(tup1[3])
+        phone=str(tup1[4])
+        loyalty=str(tup2[0])
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.profile_title.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:20pt; font-weight:600; font-style:normal; color:#000000;\">P R O F I L E</span><span style=\" font-size:20pt; font-weight:600; color:#4677ff;\"><br/></span></p></body></html>"))
         self.name_label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600; color:#ffffff;\">N A M E</span></p></body></html>"))
@@ -191,12 +222,12 @@ class Ui_MainWindow(object):
         self.phone_label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; font-weight:600; color:#ffffff;\">P H O N E</span></p><p><span style=\" font-size:14pt; font-weight:600; color:#ffffff;\">N U M B E R</span></p></body></html>"))
         self.user_id_label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; font-weight:600; color:#ffffff;\">U S E R I D</span></p></body></html>"))
         self.loyalty_label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; font-weight:600; color:#ffffff;\">L O Y A L T Y</span></p></body></html>"))
-        self.name_input.setText(_translate("MainWindow", "<html><head/><body><p><br/></p></body></html>"))
-        self.user_id_input.setText(_translate("MainWindow", "<html><head/><body><p><br/></p></body></html>"))
-        self.gender_input.setText(_translate("MainWindow", "<html><head/><body><p><br/></p></body></html>"))
-        self.age_input.setText(_translate("MainWindow", "<html><head/><body><p><br/></p></body></html>"))
-        self.loyalty_input.setText(_translate("MainWindow", "<html><head/><body><p><br/></p></body></html>"))
-        self.phone_input.setText(_translate("MainWindow", "<html><head/><body><p><br/></p></body></html>"))
+        self.name_input.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; font-weight:600; color:#ffffff;\">"+name+"<br/></p></body></html>"))
+        self.user_id_input.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; font-weight:600; color:#ffffff;\">"+str(id)+"<br/></p></body></html>"))
+        self.gender_input.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; font-weight:600; color:#ffffff;\">"+gender+"<br/></p></body></html>"))
+        self.age_input.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; font-weight:600; color:#ffffff;\">"+age+"<br/></p></body></html>"))
+        self.loyalty_input.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; font-weight:600; color:#ffffff;\">"+loyalty+"<br/></p></body></html>"))
+        self.phone_input.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; font-weight:600; color:#ffffff;\">"+phone+"<br/></p></body></html>"))
         self.logout_button.setText(_translate("MainWindow", "L o g o u t"))
         self.last_transaction_button.setText(_translate("MainWindow", "Last Transaction"))
         self.shop_button.setText(_translate("MainWindow", "Go to Shop"))

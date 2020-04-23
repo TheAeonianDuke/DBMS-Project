@@ -11,6 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 #import imm_rc
 import homeuinew
+import sqlite3
 
 class Ui_MainWindow(object):
     def openWindowProfile(self):
@@ -19,8 +20,26 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.window)
         self.window.hide()
         self.window.show()
- 
+    def fillLoyalty(self,id,var): #id is the user_id and var is the type of loyalty card("gold",silver)
+        db=sqlite3.connect("dbms_db.db")
+        cur=db.cursor()
+        #cur.execute("SELECT category FROM loyalty WHERE user_id = ?", (id,))
+        # query="""IF EXISTS (select * from loyalty where user_id= 'id') THEN
+        # update loyalty set category=? where user_id =?;
+        # ELSE 
+        # insert into loyalty (user_id,category) values (?,?);
+        # """
+        # query="""INSERT OR IGNORE INTO loyalty (user_id,category) VALUES (?,?)
+        # UPDATE loyalty SET category =? WHERE user_id=?;"""
+        query="""INSERT OR REPLACE INTO loyalty VALUES (?, ?);"""
+        params=(str(id),str(var))
+        cur.execute(query,params)
+        # q2="ORDER BY id;"
+        # cur.execute(q2)
+        db.commit()
+        db.close()
     def updateSilver(self): 
+        id=17
         print("Silver is pressed")
         _translate = QtCore.QCoreApplication.translate
         self.confirmation_label.setText(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -28,8 +47,10 @@ class Ui_MainWindow(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#ffffff;\">Your loyalty card has been updated to Silver</span></p></body></html>"))
+        self.fillLoyalty(id,"Silver")
 
     def updateGold(self):
+        id=17
         print("Gold is pressed")
         _translate = QtCore.QCoreApplication.translate
         self.confirmation_label.setText(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -37,8 +58,9 @@ class Ui_MainWindow(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#ffffff;\">Your loyalty card has been updated to Gold</span></p></body></html>"))
-
+        self.fillLoyalty(id,"Gold")
     def updatePlatinum(self):
+        id=17
         print("Platinum is pressed")
         _translate = QtCore.QCoreApplication.translate
         self.confirmation_label.setText(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -46,7 +68,7 @@ class Ui_MainWindow(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#ffffff;\">Your loyalty card has been updated to Platinum</span></p></body></html>"))
-     
+        self.fillLoyalty(id,"Platinum")
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1280, 720)

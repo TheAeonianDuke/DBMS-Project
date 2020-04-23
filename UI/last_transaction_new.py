@@ -10,9 +10,30 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 import homeuinew
+import sqlite3
 
 
 class Ui_MainWindow(object):
+    def loadLastTransaction(self,id): 
+        db=sqlite3.connect("dbms_db.db")
+        cur=db.cursor()
+        cur.execute("SELECT receipt_id FROM transactions WHERE user_id=?;",(id,))
+        tup=cur.fetchall()
+        #print(tup[-1][0])
+        a=tup[-1][0]
+        #cur.execute("SELECT product_id,quantity,discounts_id,name,category FROM user_purchases NATURAL JOIN products WHERE receipt_id=?;",(a,))
+        cur.execute("SELECT product_id,quantity,discount_type,name,category FROM user_purchases NATURAL JOIN products NATURAL JOIN discounts WHERE receipt_id=?;",(a,))
+        tup=cur.fetchall()
+        return tup
+
+    def fillLastTransaction(self,id):
+        _translate = QtCore.QCoreApplication.translate
+        solution=self.loadLastTransaction(id)
+        solution_string=""
+        for i in range(len(solution)):
+            solution_string+=str(solution[i][1])+" "+str(solution[i][3])+" of "+str(solution[i][4])+" category with discount "+str(solution[i][2])+"\n"
+        self.last_transaction_content.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600;\">"+solution_string+"</span></p></body></html>"))
+    
     def openWindowShop(self):
         self.window = QtWidgets.QMainWindow()
         # self.ui = last_transaction_ui.Ui_MainWindow() #Take from Harsh's Map/shop file
@@ -86,9 +107,11 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
+        id=1
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.last_transaction_title.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:20pt; font-weight:600;\">Last Transaction</span></p></body></html>"))
+        self.fillLastTransaction(id)
         self.profile_button.setText(_translate("MainWindow", "Go back to Profile"))
         self.addlasttocart_button.setText(_translate("MainWindow", "Add last transaction to cart"))
         self.shop_button.setText(_translate("MainWindow", "Go to shop"))
