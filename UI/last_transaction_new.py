@@ -32,7 +32,7 @@ class Ui_MainWindow(object):
         solution_string=""
         for i in range(len(solution)):
             solution_string+=str(solution[i][1])+" "+str(solution[i][3])+" of "+str(solution[i][4])+" category with discount "+str(solution[i][2])+"\n"
-        self.last_transaction_content.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600;\">"+solution_string+"</span></p></body></html>"))
+        self.last_transaction_content.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600;color:#228B22\">"+" Your last transaction was <br> </span><span style=\" font-size:10pt; font-weight:600;color:#800080\">"+solution_string+"</span></p></body></html>"))
     
     def openWindowShop(self):
         self.window = QtWidgets.QMainWindow()
