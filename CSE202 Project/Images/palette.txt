@@ -1,6 +1,0 @@
-pink: ff31c4
-yellow: fecd96
-purple: 671ebd
-aqua: 97fafc
-lilac: ca4cf7
-mauve: 7f1862
