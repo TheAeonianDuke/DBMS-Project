@@ -1,0 +1,9 @@
+Fonts used in this design:
+
+Font: Selima
+Author: Jroh
+Url: https://www.fontsquirrel.com/fonts/selima
+
+Font: Antipasto
+Author: Zetafonts
+Url: https://www.fontsquirrel.com/fonts/antipasto
