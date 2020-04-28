@@ -17,12 +17,13 @@ class Ui_MainWindow(object):
     def loadLastTransaction(self,id): 
         db=sqlite3.connect("dbms_db.db")
         cur=db.cursor()
-        cur.execute("SELECT receipt_id FROM transactions WHERE user_id=?;",(id,))
-        tup=cur.fetchall()
-        #print(tup[-1][0])
-        a=tup[-1][0]
-        #cur.execute("SELECT product_id,quantity,discounts_id,name,category FROM user_purchases NATURAL JOIN products WHERE receipt_id=?;",(a,))
-        cur.execute("SELECT product_id,quantity,discount_type,name,category FROM user_purchases NATURAL JOIN products NATURAL JOIN discounts WHERE receipt_id=?;",(a,))
+        # cur.execute("SELECT receipt_id FROM transactions WHERE user_id=?;",(id,))
+        # tup=cur.fetchall()
+        # #print(tup[-1][0])
+        # a=tup[-1][0]
+        # #cur.execute("SELECT product_id,quantity,discounts_id,name,category FROM user_purchases NATURAL JOIN products WHERE receipt_id=?;",(a,))
+        # cur.execute("SELECT product_id,quantity,discount_type,name,category FROM user_purchases NATURAL JOIN products NATURAL JOIN discounts WHERE receipt_id=?;",(a,))
+        cur.execute("SELECT product_id,quantity,discount_type,name,category FROM user_purchases NATURAL JOIN products NATURAL JOIN discounts WHERE receipt_id=(SELECT MAX(receipt_id) FROM transactions WHERE user_id=?);",(id,))
         tup=cur.fetchall()
         return tup
 

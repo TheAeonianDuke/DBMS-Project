@@ -33,9 +33,11 @@ class Ui_MainWindow(object):
         self.window.hide()
         self.window.show()
     def openWindowInsight(self):
-        self.window = QtWidgets.QMainWindow()
         # self.ui = last_transaction_ui.Ui_MainWindow() #Take from Ritoma's insight file
         # self.ui.setupUi(self.window)
+        self.window = QtWidgets.QMainWindow()
+        #self.ui = window.UiCustomerAnalytics()
+        #self.hide()
         self.window.hide()
         self.window.show()
     def openWindowShop(self):
