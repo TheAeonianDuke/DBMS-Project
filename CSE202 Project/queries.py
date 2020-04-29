@@ -114,12 +114,15 @@ def matchRows(connection, cursor, tableName, columnName, matchString):
 	:rtype: list
 	"""
 
-	query = "SELECT * FROM " + tableName + " WHERE " + columnName + " = " + matchString
-	table = cursor.execute(query)
-	rows = []
-	for i in table:
-		rows.append(i)
-	return rows
+	try:
+		query = "SELECT * FROM " + tableName + " WHERE " + columnName + " = " + matchString
+		table = cursor.execute(query)
+		rows = []
+		for i in table:
+			rows.append(i)
+		return rows
+	except Exception:
+		return []
 
 def matchRowsTwoColumns(connection, cursor, tableName, columnNameOne, columnNameTwo, matchString):
 	"""Returns the rows of the table which are an exact match for the given string in the designated column.
@@ -189,12 +192,16 @@ def findTopN(connection, cursor, tableName, columnName, n):
 	:rtype: list
 	"""
 
-	query = "SELECT * FROM " + tableName + " ORDER BY " + columnName + " DESC LIMIT " + str(n)
-	table = cursor.execute(query)
-	rows = []
-	for i in table:
-		rows.append(i)
-	return rows
+	try:
+		query = "SELECT * FROM " + tableName + " ORDER BY " + columnName + " DESC LIMIT " + str(n)
+		table = cursor.execute(query)
+		rows = []
+		for i in table:
+			rows.append(i)
+		return rows
+	except Exception:
+		return []
+	
 
 def calculateTotalProfit(connection, cursor):
 	"""Returns the total profit so far.
