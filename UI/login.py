@@ -23,18 +23,32 @@ from loginui import *
 import numpy as np
 import sqlite3
 import splashscreen
+import newcombined
 
 class MainWindowLogin(QWidget):
     # class constructor
     def __init__(self,oldwindow):
         super().__init__()
+        self.scan=0
         self.ui = Ui_MainWindow()
         self.ui.setupUi(oldwindow)
         self.timer = QTimer()
+        self.thiswindow = oldwindow
         self.timer.timeout.connect(self.viewCam)
-        # self.ui.control_bt.hide()
+        self.ui.backbtn_2.clicked.connect(self.backBtn)
         self.ui.control_bt.clicked.connect(self.controlTimer)
-        # self.ui.submit.clicked.connect(self.insertOrUpdate)
+        self.ui.login_btn.clicked.connect(self.loginToProfile)
+        self.verified=False
+            
+
+
+    def backBtn(self):
+        self.scan+=1
+        self.window = QtWidgets.QMainWindow()
+        self.ui = splashscreen.Ui_MainWindow(self.window)
+        self.ui.setupUi(self.window)
+        self.thiswindow.close()
+        self.window.show()
 
     def openWindow(self):
         self.window = QtWidgets.QMainWindow()
@@ -42,10 +56,19 @@ class MainWindowLogin(QWidget):
         self.ui.setupUi(self.window)
         self.window.show()
 
+    def loginToProfile(self):
+        if(self.verified==True):
+            self.scan+=1
+            self.window = QtWidgets.QMainWindow()
+            self.ui = newcombined.Final(self.window,self.profiler[0])
+            self.thiswindow.close()
+            self.window.show()
+        return
+
     def viewCam(self):
         sampleNum=0
-        self.scan=0
-        while(self.scan!=1):
+        detected=False
+        while(self.scan<1):
             ret,img=self.cam.read() #Read from cam
 
             ret = cv2.resize(ret, (860,640))
@@ -67,27 +90,33 @@ class MainWindowLogin(QWidget):
                     cv2.putText(img,"Name : "+str(profile[1]),(x,y+h+20),self.font,0.5,(0,255,0));
                     cv2.putText(img,"Age : "+str(profile[3]),(x,y+h+45),self.font,0.5,(0,255,0));
                     cv2.putText(img,"Gender : "+str(profile[4]),(x,y+h+70),self.font,0.5,(0,255,0));
-
+                    detected=True   
             self.ui.image_label.setPixmap(QPixmap.fromImage(qImg))
             # cv2.imshow("Face",img);
-            cv2.waitKey(1)
-            self.ui.verify_btn.clicked.connect(self.verifyUser)
-            # if(==ord('q')):
-            #     self.timer.stop()
-            #     self.cam.release()
-            #     break;
+            cv2.waitKey(1)                    
+            break
+
+        if(detected==True):
             
-            
-                
+            # self.cam.release()
+            self.ui.verify_btn.clicked.connect(self.verifyUser)         
+            return
+                           
 
     def verifyUser(self):
+        
+        self.cam.release()
+        self.timer.stop()
+        self.scan+=1
         self.ui.namelabel.setText(str(self.profiler[1]))
         self.ui.agelabel.setText(str(self.profiler[3]))
         self.ui.genderlabel.setText(str(self.profiler[4]))
         self.ui.phonelabel.setText(str(self.profiler[5]))
-        self.timer.stop()
-        self.cam.release()
-        self.scan=1
+        self.verified=True
+        
+        
+        return
+        
 
     def controlTimer(self):
         if not self.timer.isActive():
@@ -107,7 +136,7 @@ class MainWindowLogin(QWidget):
         #     
         #     
     def getProfile(self,id):  
-        facedb=sqlite3.connect("../dbms_db.db")
+        facedb=sqlite3.connect("dbms_db.db")
         c=facedb.cursor()
         cmd="SELECT * FROM users WHERE user_id="+str(id)
         cursor=facedb.execute(cmd)

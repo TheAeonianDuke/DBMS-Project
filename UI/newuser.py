@@ -1,11 +1,13 @@
-"""
-In this example, we demonstrate how to create simple camera viewer using Opencv3 and PyQt5
+# TODO : Add back navigation button // DONE!
+#        Take user to login after registration 
+#        Handle empty user inputs // DONE!
+#        Handle empty button clicks
+#        UI, normalization in doc, indexing in docs, ER diagram
+#        Relational Algebra
+#        
 
-Author: Berrouba.A
-Last edited: 21 Feb 2018
-"""
 
-# import system module
+
 import sys
 
 # import some PyQt5 modules
@@ -14,6 +16,8 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtGui import QImage
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QTimer
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QMessageBox
 
 # import Opencv module
 import cv2
@@ -25,6 +29,7 @@ from newuserui import *
 import numpy as np
 import sqlite3
 import splashscreen
+import login
 
 class MainWindow(QWidget):
     # class constructor
@@ -32,22 +37,37 @@ class MainWindow(QWidget):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(oldwindow)
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.viewCam)
+        self.thiswindow = oldwindow
         self.ui.control_bt.hide()
         self.ui.control_bt.clicked.connect(self.controlTimer)
         self.ui.submit.clicked.connect(self.insertOrUpdate)
+        self.ui.backbtn.clicked.connect(self.backBtn)
+        self.scan=0
+
+    def backBtn(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui = splashscreen.Ui_MainWindow(self.window)
+        self.ui.setupUi(self.window)
+        self.thiswindow.close()
+        self.window.show()
+
+
+    def loginBtn(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui = login.MainWindowLogin(self.window)
+        self.thiswindow.close()
+        self.window.show()
 
     def openWindow(self):
         self.window = QtWidgets.QMainWindow()
-        self.ui = splashscreen.Ui_MainWindow()
+        self.ui = splashscreen.Ui_MainWindow(self.window)
         self.ui.setupUi(self.window)
         self.window.show()
 
     def viewCam(self):
         sampleNum=0
-        scan=0
-        while(scan!=1):
+        
+        while(self.scan<1):
             ret,img=self.cam.read() #Read from cam
             # print(img)
             ret = cv2.resize(ret, (860,640))
@@ -64,19 +84,22 @@ class MainWindow(QWidget):
                 cv2.imwrite("dataSet/User."+str(self.idval)+"."+str(sampleNum)+".jpg",gray[y:y+h,x:x+w])
                 cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
                 cv2.waitKey(100);
-
+            # print(self.scan)
             self.ui.image_label.setPixmap(QPixmap.fromImage(qImg))
             # cv2.imshow("Face",img);
             cv2.waitKey(1);
             if(sampleNum>20):
                 print("DONE! ID :", self.idval)
-                scan=1
+                self.scan+=1
                 self.ui.control_bt.setText("T r a i n i n g   N o w . . .")
                 IDs,faces=self.getImagesWithID()
                 self.recognizer.train(faces,IDs)
                 self.recognizer.save('recognizer_trainningData.yml')
                 self.timer.stop()
                 self.cam.release()
+                self.ui.control_bt.setText("D o n e !  G o   t o   l o g i n")
+                self.ui.control_bt.setStyleSheet("font: 12pt \"Lemon/Milk\";color: rgb(255, 255, 255);background-color: rgb(39, 235, 56);")
+                self.ui.control_bt.clicked.connect(self.loginBtn)
                 break
                 
 
@@ -102,20 +125,41 @@ class MainWindow(QWidget):
         Gen = self.ui.genderinput.text()
         Phone = self.ui.phoneinput.text()
 
-        params = (str(Name), str(Age), str(Gen), str(Phone))
-        conn=sqlite3.connect("../dbms_db.db")
-        cmd2=""
-        cmd3=""
-        cmd4=""
-        cursor = conn.execute("INSERT INTO users(user_id,first_name,age,gender,phone)  Values (NULL, ?, ?, ?, ?)", params)
-        
-        conn.execute(cmd2)
-        conn.execute(cmd3)
-        conn.execute(cmd4)
-        conn.commit()
-        conn.close()
-        self.ui.control_bt.show()
-        self.idval = (cursor.lastrowid)
+        if(str(Name)!="" and str(Age)!="" and str(Gen)!="" and str(Phone)!="" and str(Age).isnumeric() and str(Phone).isnumeric() and (str(Gen).lower() == 'male' or str(Gen).lower()=='female')):
+
+            params = (str(Name), str(Age), str(Gen), str(Phone))
+            
+            conn=sqlite3.connect("dbms_db.db")
+            cmd2=""
+            cmd3=""
+            cmd4=""
+            cursor = conn.execute("INSERT INTO users(user_id,first_name,age,gender,phone)  Values (NULL, ?, ?, ?, ?)", params)
+            conn.execute(cmd2)
+            conn.execute(cmd3)
+            conn.execute(cmd4)
+            conn.commit()
+            conn.close()
+
+            self.ui.control_bt.show()
+            self.idval = (cursor.lastrowid)
+            conn=sqlite3.connect("../dbms_db.db")
+            params2 = (str(self.idval), str("None"))
+            cursor1 = conn.execute("INSERT INTO loyalty(user_id,category) Values(?,?)",params2)
+            conn.commit()
+            conn.close()
+            self.timer = QTimer()
+            self.timer.timeout.connect(self.viewCam)
+
+        elif ((str(Gen).lower() != 'male' or str(Gen).lower() !='female') and str(Gen)!="" and str(Phone)!="" ):
+
+            QMessageBox.about(self, "Error!", "Enter Either Male or Female!")
+            print("Enter Either Male or Female!")
+
+
+        else:
+
+            QMessageBox.about(self, "Error!", "Please enter all fields or check field values!")
+            print("Enter All Values!")
 
 
 
@@ -137,3 +181,4 @@ class MainWindow(QWidget):
         cv2.destroyAllWindows()
         return np.array(IDs),faces
         
+

@@ -243,6 +243,32 @@ font: 13pt &quot;Montserrat&quot;;</string>
      <string>S u b m i t</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="backbtn">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../Images/3646423e2df5a8a39333e2aa8bbcc8e1_back-arrow-icon-png-image-free-download-searchpngcom_715-715.png</normaloff>../Images/3646423e2df5a8a39333e2aa8bbcc8e1_back-arrow-icon-png-image-free-download-searchpngcom_715-715.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>32</width>
+      <height>32</height>
+     </size>
+    </property>
+   </widget>
    <zorder>control_bt</zorder>
    <zorder>label</zorder>
    <zorder>image_label</zorder>
@@ -256,6 +282,7 @@ font: 13pt &quot;Montserrat&quot;;</string>
    <zorder>phoneinput</zorder>
    <zorder>genderinput</zorder>
    <zorder>submit</zorder>
+   <zorder>backbtn</zorder>
   </widget>
  </widget>
  <resources/>

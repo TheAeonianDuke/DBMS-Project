@@ -13,17 +13,22 @@ import login
 import sys
 
 class Ui_MainWindow(object):
+
+    def __init__(self,thiswindow):
+        self.thiswindow = thiswindow
+
+
     def openWindowNewUser(self):
         self.window = QtWidgets.QMainWindow()
         self.ui = newuser.MainWindow(self.window)
-        window.hide()
+        self.thiswindow.close()
         self.window.show()
 
 
     def openWindowLogin(self):
         self.window = QtWidgets.QMainWindow()
         self.ui = login.MainWindowLogin(self.window)
-        window.hide()
+        self.thiswindow.close()
         self.window.show()
 
     def setupUi(self, MainWindow):
@@ -87,10 +92,10 @@ class Ui_MainWindow(object):
 
 
 
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    window = QtWidgets.QMainWindow()
-    splashui = Ui_MainWindow()
-    splashui.setupUi(window)
-    window.show()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     app = QtWidgets.QApplication(sys.argv)
+#     window = QtWidgets.QMainWindow()
+#     splashui = Ui_MainWindow(window)
+#     splashui.setupUi(window)
+#     window.show()
+#     sys.exit(app.exec_())
