@@ -142,7 +142,7 @@ class MainWindow(QWidget):
 
             self.ui.control_bt.show()
             self.idval = (cursor.lastrowid)
-            conn=sqlite3.connect("../dbms_db.db")
+            conn=sqlite3.connect("dbms_db.db")
             params2 = (str(self.idval), str("None"))
             cursor1 = conn.execute("INSERT INTO loyalty(user_id,category) Values(?,?)",params2)
             conn.commit()
