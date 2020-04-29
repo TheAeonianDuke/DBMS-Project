@@ -417,7 +417,7 @@ def findDiscountsOnOrOff(connection, cursor, user_id):
 				return True
 		return False
 	except Exception:
-		pass
+		return False
 
 if __name__ == '__main__':
 	connection = sqlite3.connect('dbms_db.db')
