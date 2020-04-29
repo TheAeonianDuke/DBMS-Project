@@ -1,12 +1,9 @@
-# Ritoma Sen
-
 import sqlite3
 import re
 from heapq import nlargest
 
 def columnNames(connection, cursor, tableName):
 	"""Returns the column names of the inventory table
-
 	:param connection: The sqlite3 connection to the database.
 	:type connection: sqlite3.Connection
 	:param cursor: The sqlite3 cursor to execute queries.
@@ -24,7 +21,6 @@ def columnNames(connection, cursor, tableName):
 
 def allRows(connection, cursor, tableName):
 	"""Returns the rows of the table
-
 	:param connection: The sqlite3 connection to the database.
 	:type connection: sqlite3.Connection
 	:param cursor: The sqlite3 cursor to execute queries.
@@ -44,7 +40,6 @@ def allRows(connection, cursor, tableName):
 
 def searchInRows(connection, cursor, tableName, columnName, searchString):
 	"""Returns the rows of the table which have the given string in the designated column.
-
 	:param connection: The sqlite3 connection to the database.
 	:type connection: sqlite3.Connection
 	:param cursor: The sqlite3 cursor to execute queries.
@@ -68,7 +63,6 @@ def searchInRows(connection, cursor, tableName, columnName, searchString):
 
 def searchInRowsTwoColumns(connection, cursor, tableName, columnNameOne, columnNameTwo, searchString):
 	"""Returns the rows of the table which have the given string in the designated column.
-
 	:param connection: The sqlite3 connection to the database.
 	:type connection: sqlite3.Connection
 	:param cursor: The sqlite3 cursor to execute queries.
@@ -99,7 +93,6 @@ def searchInRowsTwoColumns(connection, cursor, tableName, columnNameOne, columnN
 
 def matchRows(connection, cursor, tableName, columnName, matchString):
 	"""Returns the rows of the table which are an exact match for the given string in the designated column.
-
 	:param connection: The sqlite3 connection to the database.
 	:type connection: sqlite3.Connection
 	:param cursor: The sqlite3 cursor to execute queries.
@@ -114,16 +107,18 @@ def matchRows(connection, cursor, tableName, columnName, matchString):
 	:rtype: list
 	"""
 
-	query = "SELECT * FROM " + tableName + " WHERE " + columnName + " = " + matchString
-	table = cursor.execute(query)
-	rows = []
-	for i in table:
-		rows.append(i)
-	return rows
+	try:
+		query = "SELECT * FROM " + tableName + " WHERE " + columnName + " = " + matchString
+		table = cursor.execute(query)
+		rows = []
+		for i in table:
+			rows.append(i)
+		return rows
+	except Exception:
+		return []
 
 def matchRowsTwoColumns(connection, cursor, tableName, columnNameOne, columnNameTwo, matchString):
 	"""Returns the rows of the table which are an exact match for the given string in the designated column.
-
 	:param connection: The sqlite3 connection to the database.
 	:type connection: sqlite3.Connection
 	:param cursor: The sqlite3 cursor to execute queries.
@@ -154,7 +149,6 @@ def matchRowsTwoColumns(connection, cursor, tableName, columnNameOne, columnName
 
 def findLocation(connection, cursor, id):
 	"""Returns the location of the product with the given id.
-
 	:param connection: The sqlite3 connection to the database.
 	:type connection: sqlite3.Connection
 	:param cursor: The sqlite3 cursor to execute queries.
@@ -174,7 +168,6 @@ def findLocation(connection, cursor, id):
 
 def findTopN(connection, cursor, tableName, columnName, n):
 	"""Returns the rows of the table which have the top n values in the specified column.
-
 	:param connection: The sqlite3 connection to the database.
 	:type connection: sqlite3.Connection
 	:param cursor: The sqlite3 cursor to execute queries.
@@ -189,16 +182,19 @@ def findTopN(connection, cursor, tableName, columnName, n):
 	:rtype: list
 	"""
 
-	query = "SELECT * FROM " + tableName + " ORDER BY " + columnName + " DESC LIMIT " + str(n)
-	table = cursor.execute(query)
-	rows = []
-	for i in table:
-		rows.append(i)
-	return rows
+	try:
+		query = "SELECT * FROM " + tableName + " ORDER BY " + columnName + " DESC LIMIT " + str(n)
+		table = cursor.execute(query)
+		rows = []
+		for i in table:
+			rows.append(i)
+		return rows
+	except Exception:
+		return []
+	
 
 def calculateTotalProfit(connection, cursor):
 	"""Returns the total profit so far.
-
 	:param connection: The sqlite3 connection to the database.
 	:type connection: sqlite3.Connection
 	:param cursor: The sqlite3 cursor to execute queries.
@@ -228,7 +224,6 @@ def calculateTotalProfit(connection, cursor):
 
 def calculateTotalExpenditure(connection, cursor, user_id):
 	"""Returns the total amount spent at the store by the specified user.
-
 	:param connection: The sqlite3 connection to the database.
 	:type connection: sqlite3.Connection
 	:param cursor: The sqlite3 cursor to execute queries.
@@ -249,7 +244,6 @@ def calculateTotalExpenditure(connection, cursor, user_id):
 
 def calculateAverageProfitPerTransaction(connection, cursor):
 	"""Returns the average profit per transaction.
-
 	:param connection: The sqlite3 connection to the database.
 	:type connection: sqlite3.Connection
 	:param cursor: The sqlite3 cursor to execute queries.
@@ -267,7 +261,6 @@ def calculateAverageProfitPerTransaction(connection, cursor):
 
 def calculateAverageExpenditurePerTransaction(connection, cursor, user_id):
 	"""Returns the average profit per transaction.
-
 	:param connection: The sqlite3 connection to the database.
 	:type connection: sqlite3.Connection
 	:param cursor: The sqlite3 cursor to execute queries.
@@ -287,7 +280,6 @@ def calculateAverageExpenditurePerTransaction(connection, cursor, user_id):
 
 def findFiveMostFrequentAll(connection, cursor):
 	"""Returns the rows of the product table which have the five most frequently bought products.
-
 	:param connection: The sqlite3 connection to the database.
 	:type connection: sqlite3.Connection
 	:param cursor: The sqlite3 cursor to execute queries.
@@ -321,7 +313,6 @@ def findFiveMostFrequentAll(connection, cursor):
 
 def findFiveMostFrequentForUser(connection, cursor, user_id):
 	"""Returns the rows of the product table which have the five most frequently bought products by the specified user.
-
 	:param connection: The sqlite3 connection to the database.
 	:type connection: sqlite3.Connection
 	:param cursor: The sqlite3 cursor to execute queries.
@@ -357,7 +348,6 @@ def findFiveMostFrequentForUser(connection, cursor, user_id):
 
 def findDiscountsOnOrOff(connection, cursor, user_id):
 	"""Returns a true or false value based on whether any of the most frequently bought products by the specified user are on discount.
-
 	:param connection: The sqlite3 connection to the database.
 	:type connection: sqlite3.Connection
 	:param cursor: The sqlite3 cursor to execute queries.

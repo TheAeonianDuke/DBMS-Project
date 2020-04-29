@@ -3,10 +3,12 @@ from PyQt5 import QtWidgets,QtGui,Qt, QtCore
 from PyQt5.QtWidgets import QApplication,QMainWindow
 import sys 
 import sqlite3
+import first
 
 class SamikWindow(QMainWindow):
     def __init__(self,cartList):
         super(SamikWindow,self).__init__()
+
         self.resize(1280,720)
         # self.setGeometry(300,300,1280,720)
         self.cartList = cartList #a 2d list of user purchases
@@ -14,8 +16,12 @@ class SamikWindow(QMainWindow):
         # self.setStyleSheet("background-color: rgb(220, 126, 212);")
         
         
+    def profile(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui = first.Ui_MainWindow(self.window)
+        self.ui.setupUi(self.window)
+        self.window.show()
 
-        
 
     def initCartUi(self):
         self.font = QtGui.QFont("Josefin Sans",16, QtGui.QFont.Bold)
@@ -151,6 +157,14 @@ class SamikWindow(QMainWindow):
         
 
     def addTransactions(self):
+        self.label.hide()
+        self.label_2.hide()
+        self.label_3.hide()
+        self.label_4.hide()
+        self.label_5.hide()
+        self.label_6.hide()
+        self.label10.hide()
+
         print("executed")
         self.label = QtWidgets.QLabel(self)
         self.label.setGeometry(QtCore.QRect(0, 0, 1281, 721))
@@ -159,11 +173,24 @@ class SamikWindow(QMainWindow):
         self.label.setPixmap(QtGui.QPixmap("Images/receipt.jpg"))
         self.label.setScaledContents(True)
         self.label.setObjectName("label")
+        self.label.show()
+
+        self.ExistingUserBtn_2 = QtWidgets.QPushButton(self)
+        self.ExistingUserBtn_2.setGeometry(QtCore.QRect(650, 650, 281, 41))
+        self.ExistingUserBtn_2.setStyleSheet("background-color: rgb(255, 191, 93);color: rgb(247, 247, 247);font: 15pt \"Lemon/Milk\";")
+        self.ExistingUserBtn_2.setObjectName("ExistingUserBtn_2")
+        self.ExistingUserBtn_2.setText("E X I T")
+        self.ExistingUserBtn_2.clicked.connect(self.profile)
+        self.ExistingUserBtn_2.show()
 
         add_to_transactins = (self.cartList[0][2],self.cartList[0][1],self.total_cost,self.employee_id.text(),self.employee_rating.text())
         print(add_to_transactins)
-        self.c.execute("insert into transactions(receipt_id,user_id,total_cost,employee_id,satisfaction) values (?,?,?,?,?)",add_to_transactins)
-        self.con.commit()
+        try:
+            self.c.execute("insert into transactions(receipt_id,user_id,total_cost,employee_id,satisfaction) values (?,?,?,?,?)",add_to_transactins)
+            self.con.commit()
+        except Exception:
+            pass
+
         self.employee_id.hide()
         self.employee_rating.hide()
         self.checkoutLabel1.hide()
@@ -172,6 +199,8 @@ class SamikWindow(QMainWindow):
             self.cartCheckBox[i].hide()
         self.proceedButton.hide()
         self.receipt_id_label = QtWidgets.QLabel(self)
+
+
 
         
 
@@ -184,15 +213,21 @@ class SamikWindow(QMainWindow):
 
 
     def initCheckoutGui(self):
+        self.label.hide()
+        self.label_2.hide()
+        self.label_3.hide()
+        self.label_4.hide()
+        self.label_5.hide()
+        self.label_6.hide()
+        self.label10 = QtWidgets.QLabel(self)
+        self.label10.setGeometry(QtCore.QRect(0, 0, 1281, 721))
+        self.label10.setText("")
 
-        self.label = QtWidgets.QLabel(self)
-        self.label.setGeometry(QtCore.QRect(0, 0, 1281, 721))
-        self.label.setText("")
+        self.label10.setPixmap(QtGui.QPixmap("Images/rating.jpg"))
+        self.label10.setScaledContents(True)
+        self.label10.setObjectName("label")
 
-        self.label.setPixmap(QtGui.QPixmap("Images/rating.jpg"))
-        self.label.setScaledContents(True)
-        self.label.setObjectName("label")
-
+        self.label10.show()
 
         # self.clearViewCart()
         for i in range(len(self.cartCheckBox)):
@@ -238,10 +273,13 @@ class SamikWindow(QMainWindow):
             print(self.cartCheckBox[i].isVisible())
             if self.cartCheckBox[i].isChecked():
                 self.cartCheckBox[i].move(x,y + 50*count)
-                self.cartCheckBox[i].show()
+                # self.cartCheckBox[i].show()
                 self.total_cost+= self.cartList[i][-1]
-                self.c.execute("insert into user_purchases (purchase_id,user_id,receipt_id,product_id,quantity,discounts_id,before_discount,after_discount) values (?,?,?,?,?,?,?,?)",tuple(self.cartList[i]))
-                count += 1
+                try:
+                    self.c.execute("insert into user_purchases (purchase_id,user_id,receipt_id,product_id,quantity,discounts_id,before_discount,after_discount) values (?,?,?,?,?,?,?,?)",tuple(self.cartList[i]))
+                    count += 1
+                except Exception:
+                    pass
         
         self.proceedButton = QtWidgets.QPushButton(self)
         self.proceedButton.setStyleSheet("background-color: rgb(255, 191, 93);color: rgb(247, 247, 247);font: 15pt \"Lemon/Milk\";")

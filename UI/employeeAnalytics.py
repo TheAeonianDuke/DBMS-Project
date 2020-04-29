@@ -53,8 +53,8 @@ class UiEmployeeAnalytics(QtWidgets.QMainWindow):
 	def displayProfitValues(self):
 		self.totalProfit = queries.calculateTotalProfit(connection, cursor)
 		self.averageProfitPerTransaction = queries.calculateAverageProfitPerTransaction(connection, cursor)
-		self.labelTotalValue.setText(str(self.totalProfit))
-		self.labelPerTransactionValue.setText(str(self.averageProfitPerTransaction))
+		self.labelTotalValue.setText(str(abs(self.totalProfit)))
+		self.labelPerTransactionValue.setText(str(abs(self.averageProfitPerTransaction)))
 	
 	def pushButtonProfileClicked(self):
 		self.employeeProfile = QtWidgets.QMainWindow()
