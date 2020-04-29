@@ -202,14 +202,19 @@ class SamikWindow(QMainWindow):
 
 
 
-        
+        try:
+            self.receipt_id_label.setText(str(self.cartList[0][2]))
 
-        self.receipt_id_label.setText(str(self.cartList[0][2]))
+           
+        except Exception:
+            self.receipt_id_label.setText("0")
+        
         self.receipt_id_label.setFont(QtGui.QFont("Josefin Sans",45, QtGui.QFont.Bold))
         self.receipt_id_label.adjustSize()
         # self.receipt_id_label.setAlignment(550,350)
         self.receipt_id_label.move(640,300)
         self.receipt_id_label.show()
+
 
 
     def initCheckoutGui(self):
