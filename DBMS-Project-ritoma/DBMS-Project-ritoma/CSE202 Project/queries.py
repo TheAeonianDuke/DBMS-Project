@@ -17,10 +17,13 @@ def columnNames(connection, cursor, tableName):
 	:rtype: list
 	"""
 
-	query = 'SELECT * FROM ' + tableName
-	table = cursor.execute(query)
-	data = cursor.fetchone()
-	return data.keys()
+	try:
+		query = 'SELECT * FROM ' + tableName
+		table = cursor.execute(query)
+		data = cursor.fetchone()
+		return data.keys()
+	except Exception:
+		pass
 
 def allRows(connection, cursor, tableName):
 	"""Returns the rows of the table
@@ -35,12 +38,15 @@ def allRows(connection, cursor, tableName):
 	:rtype: list
 	"""
 
-	query = 'SELECT * FROM ' + tableName
-	table = cursor.execute(query)
-	rows = []
-	for i in table:
-		rows.append(i)
-	return rows
+	try:
+		query = 'SELECT * FROM ' + tableName
+		table = cursor.execute(query)
+		rows = []
+		for i in table:
+			rows.append(i)
+		return rows
+	except Exception:
+		return []
 
 def searchInRows(connection, cursor, tableName, columnName, searchString):
 	"""Returns the rows of the table which have the given string in the designated column.
@@ -59,12 +65,15 @@ def searchInRows(connection, cursor, tableName, columnName, searchString):
 	:rtype: list
 	"""
 
-	query = "SELECT * FROM " + tableName + " WHERE " + columnName + " LIKE '%" + searchString + "%'"
-	table = cursor.execute(query)
-	rows = []
-	for i in table:
-		rows.append(i)
-	return rows
+	try:
+		query = "SELECT * FROM " + tableName + " WHERE " + columnName + " LIKE '%" + searchString + "%'"
+		table = cursor.execute(query)
+		rows = []
+		for i in table:
+			rows.append(i)
+		return rows
+	except Exception:
+		return []
 
 def searchInRowsTwoColumns(connection, cursor, tableName, columnNameOne, columnNameTwo, searchString):
 	"""Returns the rows of the table which have the given string in the designated column.
@@ -85,17 +94,20 @@ def searchInRowsTwoColumns(connection, cursor, tableName, columnNameOne, columnN
 	:rtype: list
 	"""
 
-	query = "SELECT * FROM " + tableName + " WHERE " + columnNameOne + " LIKE '%" + searchString + "%'"
-	table = cursor.execute(query)
-	rows = []
-	for i in table:
-		rows.append(i)
-	query = "SELECT * FROM " + tableName + " WHERE " + columnNameTwo + " LIKE '%" + searchString + "%'"
-	table = cursor.execute(query)
-	for j in table:
-		if j not in rows:
-			rows.append(j)
-	return rows
+	try:
+		query = "SELECT * FROM " + tableName + " WHERE " + columnNameOne + " LIKE '%" + searchString + "%'"
+		table = cursor.execute(query)
+		rows = []
+		for i in table:
+			rows.append(i)
+		query = "SELECT * FROM " + tableName + " WHERE " + columnNameTwo + " LIKE '%" + searchString + "%'"
+		table = cursor.execute(query)
+		for j in table:
+			if j not in rows:
+				rows.append(j)
+		return rows
+	except Exception:
+		return []
 
 def matchRows(connection, cursor, tableName, columnName, matchString):
 	"""Returns the rows of the table which are an exact match for the given string in the designated column.
@@ -114,12 +126,15 @@ def matchRows(connection, cursor, tableName, columnName, matchString):
 	:rtype: list
 	"""
 
-	query = "SELECT * FROM " + tableName + " WHERE " + columnName + " = " + matchString
-	table = cursor.execute(query)
-	rows = []
-	for i in table:
-		rows.append(i)
-	return rows
+	try:
+		query = "SELECT * FROM " + tableName + " WHERE " + columnName + " = " + matchString
+		table = cursor.execute(query)
+		rows = []
+		for i in table:
+			rows.append(i)
+		return rows
+	except Exception:
+		return []
 
 def matchRowsTwoColumns(connection, cursor, tableName, columnNameOne, columnNameTwo, matchString):
 	"""Returns the rows of the table which are an exact match for the given string in the designated column.
@@ -140,17 +155,20 @@ def matchRowsTwoColumns(connection, cursor, tableName, columnNameOne, columnName
 	:rtype: list
 	"""
 
-	query = "SELECT * FROM " + tableName + " WHERE " + columnNameOne + " = " + matchString
-	table = cursor.execute(query)
-	rows = []
-	for i in table:
-		rows.append(i)
-	query = "SELECT * FROM " + tableName + " WHERE " + columnNameOne + " = " + matchString
-	table = cursor.execute(query)
-	for j in table:
-		if j not in rows:
-			rows.append(j)
-	return rows
+	try:
+		query = "SELECT * FROM " + tableName + " WHERE " + columnNameOne + " = " + matchString
+		table = cursor.execute(query)
+		rows = []
+		for i in table:
+			rows.append(i)
+		query = "SELECT * FROM " + tableName + " WHERE " + columnNameOne + " = " + matchString
+		table = cursor.execute(query)
+		for j in table:
+			if j not in rows:
+				rows.append(j)
+		return rows
+	except Exception:
+		return []
 
 def findLocation(connection, cursor, id):
 	"""Returns the location of the product with the given id.
@@ -165,12 +183,15 @@ def findLocation(connection, cursor, id):
 	:rtype: tuple
 	"""
 
-	query = "SELECT * FROM map WHERE product_id = " + id
-	table = cursor.execute(query)
-	data = table.fetchone()
-	aisle = str(data['location_aisle'])
-	shelf = str(data['location_shelf'])
-	return (aisle, shelf)
+	try:
+		query = "SELECT * FROM map WHERE product_id = " + id
+		table = cursor.execute(query)
+		data = table.fetchone()
+		aisle = str(data['location_aisle'])
+		shelf = str(data['location_shelf'])
+		return (aisle, shelf)
+	except Exception:
+		return ('NA', 'NA')
 
 def findTopN(connection, cursor, tableName, columnName, n):
 	"""Returns the rows of the table which have the top n values in the specified column.
@@ -189,12 +210,16 @@ def findTopN(connection, cursor, tableName, columnName, n):
 	:rtype: list
 	"""
 
-	query = "SELECT * FROM " + tableName + " ORDER BY " + columnName + " DESC LIMIT " + str(n)
-	table = cursor.execute(query)
-	rows = []
-	for i in table:
-		rows.append(i)
-	return rows
+	try:
+		query = "SELECT * FROM " + tableName + " ORDER BY " + columnName + " DESC LIMIT " + str(n)
+		table = cursor.execute(query)
+		rows = []
+		for i in table:
+			rows.append(i)
+		return rows
+	except Exception:
+		return []
+	
 
 def calculateTotalProfit(connection, cursor):
 	"""Returns the total profit so far.
@@ -207,24 +232,27 @@ def calculateTotalProfit(connection, cursor):
 	:rtype: int
 	"""
 
-	queryOne = "SELECT product_id, quantity, after_discount FROM  user_purchases"
-	tableOne = cursor.execute(queryOne)
-	dataOne = tableOne.fetchall()
-	buyingCosts = []
-	sellingCosts = []
-	for rowNumber in range(0, len(dataOne)):
-		product_id = dataOne[rowNumber]['product_id']
-		quantity = dataOne[rowNumber]['quantity']
-		after_discount = dataOne[rowNumber]['after_discount']
-		queryTwo = "SELECT buying_cost FROM products WHERE product_id = " + str(product_id)
-		tableTwo = cursor.execute(queryTwo)
-		dataTwo = tableTwo.fetchone()
-		buying_cost = dataTwo['buying_cost']
-		buy = int(buying_cost) * int(quantity)
-		sell = int(after_discount)
-		buyingCosts.append(buy)
-		sellingCosts.append(sell)
-	return (sum(sellingCosts) - sum(buyingCosts))
+	try:
+		queryOne = "SELECT product_id, quantity, after_discount FROM  user_purchases"
+		tableOne = cursor.execute(queryOne)
+		dataOne = tableOne.fetchall()
+		buyingCosts = []
+		sellingCosts = []
+		for rowNumber in range(0, len(dataOne)):
+			product_id = dataOne[rowNumber]['product_id']
+			quantity = dataOne[rowNumber]['quantity']
+			after_discount = dataOne[rowNumber]['after_discount']
+			queryTwo = "SELECT buying_cost FROM products WHERE product_id = " + str(product_id)
+			tableTwo = cursor.execute(queryTwo)
+			dataTwo = tableTwo.fetchone()
+			buying_cost = dataTwo['buying_cost']
+			buy = int(buying_cost) * int(quantity)
+			sell = int(after_discount)
+			buyingCosts.append(buy)
+			sellingCosts.append(sell)
+		return (sum(sellingCosts) - sum(buyingCosts))
+	except:
+		return 0
 
 def calculateTotalExpenditure(connection, cursor, user_id):
 	"""Returns the total amount spent at the store by the specified user.
@@ -239,13 +267,16 @@ def calculateTotalExpenditure(connection, cursor, user_id):
 	:rtype: int
 	"""
 
-	query = "SELECT after_discount FROM user_purchases WHERE user_id = " + str(user_id)
-	table = cursor.execute(query)
-	data = table.fetchall()
-	expenditure = []
-	for rowNumber in range(0, len(data)):
-		expenditure.append(data[rowNumber]['after_discount'])
-	return sum(expenditure)
+	try:
+		query = "SELECT after_discount FROM user_purchases WHERE user_id = " + str(user_id)
+		table = cursor.execute(query)
+		data = table.fetchall()
+		expenditure = []
+		for rowNumber in range(0, len(data)):
+			expenditure.append(data[rowNumber]['after_discount'])
+		return sum(expenditure)
+	except Exception:
+		return 0
 
 def calculateAverageProfitPerTransaction(connection, cursor):
 	"""Returns the average profit per transaction.
@@ -258,12 +289,15 @@ def calculateAverageProfitPerTransaction(connection, cursor):
 	:rtype: int
 	"""
 
-	totalProfit = calculateTotalProfit(connection, cursor)
-	query = "SELECT COUNT(*) FROM transactions"
-	table = cursor.execute(query)
-	data = table.fetchall()
-	numberOfTransactions = data[0][0]
-	return round((totalProfit / numberOfTransactions), 2)
+	try:
+		totalProfit = calculateTotalProfit(connection, cursor)
+		query = "SELECT COUNT(*) FROM transactions"
+		table = cursor.execute(query)
+		data = table.fetchall()
+		numberOfTransactions = data[0][0]
+		return round((totalProfit / numberOfTransactions), 2)
+	except Exception:
+		return 0
 
 def calculateAverageExpenditurePerTransaction(connection, cursor, user_id):
 	"""Returns the average profit per transaction.
@@ -278,12 +312,15 @@ def calculateAverageExpenditurePerTransaction(connection, cursor, user_id):
 	:rtype: int
 	"""
 
-	totalExpenditure = calculateTotalExpenditure(connection, cursor, user_id)
-	query = "SELECT COUNT(*) FROM transactions WHERE user_id = " + str(user_id)
-	table = cursor.execute(query)
-	data = table.fetchall()
-	numberOfTransactions = data[0][0]
-	return round((totalExpenditure / numberOfTransactions), 2)
+	try:
+		totalExpenditure = calculateTotalExpenditure(connection, cursor, user_id)
+		query = "SELECT COUNT(*) FROM transactions WHERE user_id = " + str(user_id)
+		table = cursor.execute(query)
+		data = table.fetchall()
+		numberOfTransactions = data[0][0]
+		return round((totalExpenditure / numberOfTransactions), 2)
+	except Exception:
+		return 0
 
 def findFiveMostFrequentAll(connection, cursor):
 	"""Returns the rows of the product table which have the five most frequently bought products.
@@ -296,28 +333,31 @@ def findFiveMostFrequentAll(connection, cursor):
 	:rtype: list
 	"""
 
-	counts = {}
-	queryOne = "SELECT product_id, quantity FROM user_purchases"
-	tableOne = cursor.execute(queryOne)
-	dataOne = tableOne.fetchall()
-	for rowNumber in range(0, len(dataOne)):
-		product_id = dataOne[rowNumber]['product_id']
-		quantity = dataOne[rowNumber]['quantity']
-		if product_id not in counts:
-			counts[product_id] = quantity
-		else:
-			counts[product_id] += quantity
-	pids = nlargest(5, counts, key = counts.get)
-	pidsListString = '('
-	for pid in pids:
-		pidsListString += str(pid) + ', '
-	pidsListString = pidsListString[0:-2] + ')'
-	queryTwo = "SELECT * FROM products WHERE product_id in " + pidsListString
-	tableTwo = cursor.execute(queryTwo)
-	rows = []
-	for i in tableTwo:
-		rows.append(i)
-	return rows
+	try:
+		counts = {}
+		queryOne = "SELECT product_id, quantity FROM user_purchases"
+		tableOne = cursor.execute(queryOne)
+		dataOne = tableOne.fetchall()
+		for rowNumber in range(0, len(dataOne)):
+			product_id = dataOne[rowNumber]['product_id']
+			quantity = dataOne[rowNumber]['quantity']
+			if product_id not in counts:
+				counts[product_id] = quantity
+			else:
+				counts[product_id] += quantity
+		pids = nlargest(5, counts, key = counts.get)
+		pidsListString = '('
+		for pid in pids:
+			pidsListString += str(pid) + ', '
+		pidsListString = pidsListString[0:-2] + ')'
+		queryTwo = "SELECT * FROM products WHERE product_id in " + pidsListString
+		tableTwo = cursor.execute(queryTwo)
+		rows = []
+		for i in tableTwo:
+			rows.append(i)
+		return rows
+	except Exception:
+		return []
 
 def findFiveMostFrequentForUser(connection, cursor, user_id):
 	"""Returns the rows of the product table which have the five most frequently bought products by the specified user.
@@ -331,29 +371,31 @@ def findFiveMostFrequentForUser(connection, cursor, user_id):
 	:returns: A list of Row objects representing the required rows of the table.
 	:rtype: list
 	"""
-
-	counts = {}
-	queryOne = "SELECT product_id, quantity FROM user_purchases WHERE user_id = " + str(user_id)
-	tableOne = cursor.execute(queryOne)
-	dataOne = tableOne.fetchall()
-	for rowNumber in range(0, len(dataOne)):
-		product_id = dataOne[rowNumber]['product_id']
-		quantity = dataOne[rowNumber]['quantity']
-		if product_id not in counts:
-			counts[product_id] = quantity
-		else:
-			counts[product_id] += quantity
-	pids = nlargest(5, counts, key=counts.get)
-	pidsListString = '('
-	for pid in pids:
-		pidsListString += str(pid) + ', '
-	pidsListString = pidsListString[0:-2] + ')'
-	queryTwo = "SELECT * FROM products WHERE product_id in " + pidsListString
-	tableTwo = cursor.execute(queryTwo)
-	rows = []
-	for i in tableTwo:
-		rows.append(i)
-	return rows
+	try:
+		counts = {}
+		queryOne = "SELECT product_id, quantity FROM user_purchases WHERE user_id = " + str(user_id)
+		tableOne = cursor.execute(queryOne)
+		dataOne = tableOne.fetchall()
+		for rowNumber in range(0, len(dataOne)):
+			product_id = dataOne[rowNumber]['product_id']
+			quantity = dataOne[rowNumber]['quantity']
+			if product_id not in counts:
+				counts[product_id] = quantity
+			else:
+				counts[product_id] += quantity
+		pids = nlargest(5, counts, key=counts.get)
+		pidsListString = '('
+		for pid in pids:
+			pidsListString += str(pid) + ', '
+		pidsListString = pidsListString[0:-2] + ')'
+		queryTwo = "SELECT * FROM products WHERE product_id in " + pidsListString
+		tableTwo = cursor.execute(queryTwo)
+		rows = []
+		for i in tableTwo:
+			rows.append(i)
+		return rows
+	except Exception:
+		return []
 
 def findDiscountsOnOrOff(connection, cursor, user_id):
 	"""Returns a true or false value based on whether any of the most frequently bought products by the specified user are on discount.
@@ -368,11 +410,14 @@ def findDiscountsOnOrOff(connection, cursor, user_id):
 	:rtype: boolean
 	"""
 
-	rows = findFiveMostFrequentForUser(connection, cursor, user_id)
-	for row in rows:
-		if (len(str(row['discount_id'])) != 0):
-			return True
-	return False
+	try:
+		rows = findFiveMostFrequentForUser(connection, cursor, user_id)
+		for row in rows:
+			if (len(str(row['discount_id'])) != 0):
+				return True
+		return False
+	except Exception:
+		pass
 
 if __name__ == '__main__':
 	connection = sqlite3.connect('dbms_db.db')
