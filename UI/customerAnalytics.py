@@ -5,14 +5,15 @@ from PyQt5 import QtWidgets, uic
 import sqlite3
 import queries
 import sys
+import homeuinew
 
 class UiCustomerAnalytics(QtWidgets.QMainWindow):
 
-	def __init__(self):
+	def __init__(self,id):
 		super(UiCustomerAnalytics, self).__init__()
 		uic.loadUi('customerAnalytics.ui', self)
 
-		self.user_id = '1'
+		self.user_id = id
 
 		# Finding components.
 		self.pushButtonProfile = self.findChild(QtWidgets.QPushButton, 'pushButtonProfile')
@@ -64,12 +65,11 @@ class UiCustomerAnalytics(QtWidgets.QMainWindow):
 		self.labelPerTransactionValue.setText(str(self.averageExpenditurePerTransaction))
 	
 	def pushButtonProfileClicked(self):
-		# self.customerProfile = QtWidgets.QMainWindow()
-		# self.customerProfileUi = homeuiunew.Ui_MainWindow()
-		# self.ui.setupUi(self.customerProfile)
-		# self.customerProfile.show()
-		# self.hide()
-		pass
+		self.customerProfile = QtWidgets.QMainWindow()
+		self.customerProfileUi = homeuinew.Ui_MainWindow(self.customerProfile,self.user_id)
+		self.customerProfileUi.setupUi(self.customerProfile)
+		self.customerProfile.show()
+		self.hide()
 
 connection = sqlite3.connect('dbms_db.db')
 connection.row_factory = sqlite3.Row

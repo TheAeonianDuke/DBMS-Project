@@ -33,7 +33,10 @@ class MainWindowLogin(QWidget):
         self.ui.setupUi(oldwindow)
         self.timer = QTimer()
         self.thiswindow = oldwindow
-        self.timer.timeout.connect(self.viewCam)
+        try:
+        	self.timer.timeout.connect(self.viewCam)
+        except Exception:
+        	pass
         self.ui.backbtn_2.clicked.connect(self.backBtn)
         self.ui.control_bt.clicked.connect(self.controlTimer)
         # self.ui.submit.clicked.connect(self.insertOrUpdate)
@@ -60,6 +63,7 @@ class MainWindowLogin(QWidget):
             self.ui.show()
 
     def viewCam(self):
+
         sampleNum=0
         detected=False
         while(True):
@@ -91,8 +95,8 @@ class MainWindowLogin(QWidget):
             break
 
         if(detected==True):
-            self.ui.verify_btn.clicked.connect(self.verifyUser)         
-            return
+            self.ui.verify_btn.clicked.connect(self.verifyUser)
+
             
             
                 

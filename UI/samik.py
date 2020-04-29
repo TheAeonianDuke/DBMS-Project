@@ -183,9 +183,9 @@ class SamikWindow(QMainWindow):
         self.ExistingUserBtn_2.clicked.connect(self.profile)
         self.ExistingUserBtn_2.show()
 
-        add_to_transactins = (self.cartList[0][2],self.cartList[0][1],self.total_cost,self.employee_id.text(),self.employee_rating.text())
-        print(add_to_transactins)
         try:
+            add_to_transactins = (self.cartList[0][2],self.cartList[0][1],self.total_cost,self.employee_id.text(),self.employee_rating.text())
+            print(add_to_transactins)
             self.c.execute("insert into transactions(receipt_id,user_id,total_cost,employee_id,satisfaction) values (?,?,?,?,?)",add_to_transactins)
             self.con.commit()
         except Exception:

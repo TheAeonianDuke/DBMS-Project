@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QApplication,QMainWindow
 import sys 
 import sqlite3
 
-from harsh import Ui_mainShopWindow
+import harsh
 from samik import SamikWindow
 import homeuinew
 from samikharshcombined import Combined

@@ -66,53 +66,59 @@ class MainWindowLogin(QWidget):
         return
 
     def viewCam(self):
-        sampleNum=0
-        detected=False
-        while(self.scan<1):
-            ret,img=self.cam.read() #Read from cam
 
-            ret = cv2.resize(ret, (860,640))
-            img = cv2.resize(img, (860,640))
+        try:
+            sampleNum=0
+            detected=False
+            while(self.scan<1):
+                ret,img=self.cam.read() #Read from cam
 
-            gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) #convert image to gray
-            height, width, channel = img.shape
-            step = channel * width
-            faces=self.faceDetect.detectMultiScale(gray,1.3,5) #Detect objects of different sizes 
-            qImg = QImage(img.data, width, height, step, QImage.Format_RGB888)
-            # Save images and create boxes 
-            self.profiler=None
-            for(x,y,w,h) in faces:
-                cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
-                id,conf=self.rec.predict(gray[y:y+h,x:x+w])
-                profile=self.getProfile(id)
-                self.profiler = profile
-                if(profile!=None):
-                    cv2.putText(img,"Name : "+str(profile[1]),(x,y+h+20),self.font,0.5,(0,255,0));
-                    cv2.putText(img,"Age : "+str(profile[3]),(x,y+h+45),self.font,0.5,(0,255,0));
-                    cv2.putText(img,"Gender : "+str(profile[4]),(x,y+h+70),self.font,0.5,(0,255,0));
-                    detected=True   
-            self.ui.image_label.setPixmap(QPixmap.fromImage(qImg))
-            # cv2.imshow("Face",img);
-            cv2.waitKey(1)                    
-            break
+                ret = cv2.resize(ret, (860,640))
+                img = cv2.resize(img, (860,640))
 
-        if(detected==True):
-            
-            # self.cam.release()
-            self.ui.verify_btn.clicked.connect(self.verifyUser)         
-            return
+                gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) #convert image to gray
+                height, width, channel = img.shape
+                step = channel * width
+                faces=self.faceDetect.detectMultiScale(gray,1.3,5) #Detect objects of different sizes 
+                qImg = QImage(img.data, width, height, step, QImage.Format_RGB888)
+                # Save images and create boxes 
+                self.profiler=None
+                for(x,y,w,h) in faces:
+                    cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
+                    id,conf=self.rec.predict(gray[y:y+h,x:x+w])
+                    profile=self.getProfile(id)
+                    self.profiler = profile
+                    if(profile!=None):
+                        cv2.putText(img,"Name : "+str(profile[1]),(x,y+h+20),self.font,0.5,(0,255,0));
+                        cv2.putText(img,"Age : "+str(profile[3]),(x,y+h+45),self.font,0.5,(0,255,0));
+                        cv2.putText(img,"Gender : "+str(profile[4]),(x,y+h+70),self.font,0.5,(0,255,0));
+                        detected=True   
+                self.ui.image_label.setPixmap(QPixmap.fromImage(qImg))
+                # cv2.imshow("Face",img);
+                cv2.waitKey(1)                    
+                break
+
+            if(detected==True):
+                
+                # self.cam.release()
+                self.ui.verify_btn.clicked.connect(self.verifyUser)         
+                return
+        except Exception:
+            pass
                            
 
     def verifyUser(self):
-        
-        self.cam.release()
-        self.timer.stop()
-        self.scan+=1
-        self.ui.namelabel.setText(str(self.profiler[1]))
-        self.ui.agelabel.setText(str(self.profiler[3]))
-        self.ui.genderlabel.setText(str(self.profiler[4]))
-        self.ui.phonelabel.setText(str(self.profiler[5]))
-        self.verified=True
+        try:
+            self.cam.release()
+            self.timer.stop()
+            self.scan+=1
+            self.ui.namelabel.setText(str(self.profiler[1]))
+            self.ui.agelabel.setText(str(self.profiler[3]))
+            self.ui.genderlabel.setText(str(self.profiler[4]))
+            self.ui.phonelabel.setText(str(self.profiler[5]))
+            self.verified=True
+        except Exception:
+            pass
         
         
         return

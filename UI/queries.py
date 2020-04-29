@@ -322,29 +322,33 @@ def findFiveMostFrequentForUser(connection, cursor, user_id):
 	:returns: A list of Row objects representing the required rows of the table.
 	:rtype: list
 	"""
+	try:
 
-	counts = {}
-	queryOne = "SELECT product_id, quantity FROM user_purchases WHERE user_id = " + str(user_id)
-	tableOne = cursor.execute(queryOne)
-	dataOne = tableOne.fetchall()
-	for rowNumber in range(0, len(dataOne)):
-		product_id = dataOne[rowNumber]['product_id']
-		quantity = dataOne[rowNumber]['quantity']
-		if product_id not in counts:
-			counts[product_id] = quantity
-		else:
-			counts[product_id] += quantity
-	pids = nlargest(5, counts, key=counts.get)
-	pidsListString = '('
-	for pid in pids:
-		pidsListString += str(pid) + ', '
-	pidsListString = pidsListString[0:-2] + ')'
-	queryTwo = "SELECT * FROM products WHERE product_id in " + pidsListString
-	tableTwo = cursor.execute(queryTwo)
-	rows = []
-	for i in tableTwo:
-		rows.append(i)
-	return rows
+		counts = {}
+		queryOne = "SELECT product_id, quantity FROM user_purchases WHERE user_id = " + str(user_id)
+		tableOne = cursor.execute(queryOne)
+		dataOne = tableOne.fetchall()
+		for rowNumber in range(0, len(dataOne)):
+			product_id = dataOne[rowNumber]['product_id']
+			quantity = dataOne[rowNumber]['quantity']
+			if product_id not in counts:
+				counts[product_id] = quantity
+			else:
+				counts[product_id] += quantity
+		pids = nlargest(5, counts, key=counts.get)
+		pidsListString = '('
+		for pid in pids:
+			pidsListString += str(pid) + ', '
+		pidsListString = pidsListString[0:-2] + ')'
+		queryTwo = "SELECT * FROM products WHERE product_id in " + pidsListString
+		tableTwo = cursor.execute(queryTwo)
+		rows = []
+		for i in tableTwo:
+			rows.append(i)
+		return rows
+
+	except Exception:
+		return []
 
 def findDiscountsOnOrOff(connection, cursor, user_id):
 	"""Returns a true or false value based on whether any of the most frequently bought products by the specified user are on discount.
