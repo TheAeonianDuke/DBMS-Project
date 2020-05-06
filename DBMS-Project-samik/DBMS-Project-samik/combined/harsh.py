@@ -77,7 +77,7 @@ class Ui_mainShopWindow(object):
         self.backgroundLabel = QtWidgets.QLabel(self.centralwidget)
         self.backgroundLabel.setGeometry(0,0,1280,720)
         self.backgroundLabel.setObjectName("backgroundLabel")
-        backgroundImage = QPixmap('Images/background.png')
+        backgroundImage = QPixmap('Images/floor.jpg')
         backgroundImage = backgroundImage.scaledToHeight(720)
         self.backgroundLabel.setPixmap(backgroundImage)
 
@@ -132,10 +132,10 @@ class Ui_mainShopWindow(object):
         self.buttonBeautyAndWellness.clicked.connect(lambda: self.openCategoryShop("beauty and wellness"))
         self.buttonDrinks.clicked.connect(lambda: self.openCategoryShop("drinks"))
         self.buttonFood.clicked.connect(lambda: self.openCategoryShop("food"))
-        self.buttonCleaningAndHousehold.setStyleSheet("background-color: grey")
-        self.buttonBeautyAndWellness.setStyleSheet("background-color: grey")
-        self.buttonDrinks.setStyleSheet("background-color: grey")
-        self.buttonFood.setStyleSheet("background-color: grey")
+        self.buttonCleaningAndHousehold.setStyleSheet("background-color: #FECD96")
+        self.buttonBeautyAndWellness.setStyleSheet("background-color: #97FAFC")
+        self.buttonDrinks.setStyleSheet("background-color: tomato")
+        self.buttonFood.setStyleSheet("background-color: #CA4CF7")
 
 
 
@@ -305,6 +305,14 @@ class Ui_categoryShopWindow(object):
         categoryShopWindow.resize(1280, 720)
         self.centralwidget = QtWidgets.QWidget(categoryShopWindow)
         self.centralwidget.setObjectName("centralwidget")
+
+        self.backgroundLabel = QtWidgets.QLabel(self.centralwidget)
+        self.backgroundLabel.setGeometry(0,0,1280,720)
+        self.backgroundLabel.setObjectName("backgroundLabel")
+        backgroundImage = QPixmap('Images/cart.jpg')
+        backgroundImage = backgroundImage.scaledToHeight(720)
+        self.backgroundLabel.setPixmap(backgroundImage)
+
         self.backButton = QtWidgets.QPushButton(self.centralwidget)
         self.backButton.setGeometry(QtCore.QRect(480, 610, 93, 28))
         self.backButton.setObjectName("backButton")
