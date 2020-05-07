@@ -101,9 +101,9 @@ class Ui_mainShopWindow(object):
         self.productLocationButton.setGeometry(QtCore.QRect(1040, 550, 93, 28))
         self.productLocationButton.setObjectName("productLocationButton")
         self.productLocationOutput = QtWidgets.QTextEdit(self.centralwidget)
-        self.productLocationOutput.setGeometry(QtCore.QRect(980, 590, 211, 51))
+        self.productLocationOutput.setGeometry(QtCore.QRect(950, 590, 300, 51))
         font = QtGui.QFont()
-        font.setPointSize(14)
+        font.setPointSize(10)
         self.productLocationOutput.setFont(font)
         self.productLocationOutput.setReadOnly(True)
         self.productLocationOutput.setObjectName("productLocationOutput")
@@ -265,16 +265,20 @@ class Ui_mainShopWindow(object):
 
             connection = sqlite3.connect("dbms_db.db")
             crsr = connection.cursor()
-            fetch_product = "SELECT location_aisle, location_shelf from map where product_name LIKE '"+productName+"';"
+            fetch_product = "SELECT product_name, location_aisle, location_shelf from map where product_name LIKE '%"+productName+"%';"
             crsr.execute(fetch_product)
             productDetail = crsr.fetchall()
+            outputLoc = ""
 
             if(productDetail == []):
-                self.productLocationOutput.setPlainText("Not a valid Product!")
+                outputLoc = "Not a Valid Product!"
             else:
-                print(productDetail)
-                self.productLocationOutput.setPlainText("Aisle:"+str(productDetail[0][0])+" Shelf:"+str(productDetail[0][1]))
+                for x in productDetail:
+                    print(x)
+                    outputLoc+=(str(x[0])+"-> Aisle:"+str(x[1])+" Shelf:"+str(x[2])+"\n")
 
+            self.productLocationOutput.setPlainText(outputLoc)
+            
 
 
 
